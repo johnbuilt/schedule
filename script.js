@@ -97,7 +97,7 @@ function saveProject(event) {
 function optimizeToday(event) {
     event.preventDefault();
     const fatigueLevel = parseFloat(fatigueInput.value);
-    const hoursAvailable = Math.min(2, parseFloat(hoursInput.value)); // Limit to 2 hours max
+    const hoursAvailable = Math.min(12, parseFloat(hoursInput.value)); // Limit to 12 hours max
 
     let availableTime = hoursAvailable;
     let optimizedProjects = [];
