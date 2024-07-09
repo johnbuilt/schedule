@@ -18,7 +18,7 @@
             <!-- Project items will be inserted here -->
         </ul>
         <button onclick="showAddProject()">Add Project</button>
-        <button onclick="showDailyInput()">Input Fatigue Level</button>
+        <button onclick="showTodayInput()">Today</button>
         <button onclick="showWeeklyPlanner()">Weekly Planner</button>
     </div>
 
@@ -34,10 +34,13 @@
         <button onclick="showHome()">Cancel</button>
     </div>
 
-    <div id="dailyInput" style="display:none;">
-        <h1>Daily Input</h1>
-        <input type="number" id="fatigueLevel" placeholder="Fatigue Level (1-5)" required>
-        <button onclick="suggestProject()">Submit</button>
+    <div id="todayInput" style="display:none;">
+        <h1>Today's Plan</h1>
+        <form onsubmit="optimizeToday(event)">
+            <input type="number" id="todayFatigueLevel" placeholder="Fatigue Level (1-5)" required>
+            <input type="number" id="hoursAvailable" placeholder="Hours Willing to Work" required>
+            <button type="submit">Optimize</button>
+        </form>
         <button onclick="showHome()">Cancel</button>
     </div>
 
