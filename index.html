@@ -5,68 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Scheduler</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="icon-192.png">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 <body>
-    <div id="home">
-        <h1>Projects</h1>
-        <ul id="projectList">
-            <!-- Project items will be inserted here -->
-        </ul>
+    <!-- Pages -->
+    <div id="home" class="page" style="display:none;">
+        <h1>My Projects</h1>
+        <ul id="projectList"></ul>
         <button onclick="showAddProject()">Add Project</button>
-        <button onclick="showTodayInput()">Today</button>
-        <button onclick="showWeeklyPlanner()">Weekly Planner</button>
     </div>
 
-    <div id="addProject" style="display:none;">
-        <h1>Add/Edit Project</h1>
-        <form onsubmit="saveProject(event)">
+    <div id="addProject" class="page" style="display:none;">
+        <h1>Add Project</h1>
+        <form>
             <input type="text" id="projectName" placeholder="Project Name" required>
             <input type="number" id="projectDifficulty" placeholder="Difficulty (1-5)" required>
-            <input type="number" id="projectTime" placeholder="Time Required (hours)" required>
+            <input type="number" id="projectTime" placeholder="Time (hrs)" required>
             <input type="number" id="projectImportance" placeholder="Importance (1-5)" required>
-            <button type="submit">Save</button>
+            <button type="submit">Save Project</button>
         </form>
-        <button onclick="showHome()">Cancel</button>
     </div>
 
-    <div id="todayInput" style="display:none;">
-        <h1>Today's Plan</h1>
-        <form onsubmit="optimizeToday(event)">
-            <input type="number" id="todayFatigueLevel" placeholder="Fatigue Level (1-5)" step="0.1" min="0" max="5" required>
-            <input type="number" id="hoursAvailable" placeholder="Hours Willing to Work" step="0.1" min="0" max="12" required>
+    <div id="todayInput" class="page" style="display:none;">
+        <h1>Today</h1>
+        <form>
+            <input type="number" id="todayFatigueLevel" placeholder="Fatigue Level (1-5)" required>
+            <input type="number" id="hoursAvailable" placeholder="Hours Available" required>
             <button type="submit">Optimize</button>
         </form>
-        <button onclick="showHome()">Cancel</button>
+        <div id="suggestedProjectDetails"></div>
     </div>
 
-    <div id="weeklyPlanner" style="display:none;">
-        <h1>Weekly Planner</h1>
+    <div id="weeklyPlanner" class="page" style="display:none;">
+        <h1>This Week</h1>
         <div id="calendar"></div>
         <button onclick="showHome()">Back</button>
     </div>
 
-    <div id="suggestedProject" style="display:none;">
-        <h1>Suggested Project</h1>
-        <p id="suggestedProjectDetails"></p>
-        <button onclick="showHome()">Back</button>
+    <div id="calendarPage" class="page" style="display:none;">
+        <h1>Calendar</h1>
+        <!-- Display previous and upcoming projects -->
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="#" onclick="showHome()"><i class="fas fa-tasks"></i><span>Projects</span></a>
+        <a href="#" onclick="showTodayInput()"><i class="fas fa-calendar-day"></i><span>Today</span></a>
+        <a href="#" onclick="showWeeklyPlanner()"><i class="fas fa-calendar-week"></i><span>This Week</span></a>
+        <a href="#" onclick="showCalendarPage()"><i class="fas fa-calendar-alt"></i><span>Calendar</span></a>
     </div>
 
     <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, function(error) {
-                    console.log('ServiceWorker registration failed: ', error);
-                });
-            });
-        }
-    </script>
 </body>
 </html>
