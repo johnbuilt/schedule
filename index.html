@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Scheduler</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="home">
+        <h1>Projects</h1>
+        <ul id="projectList">
+            <!-- Project items will be inserted here -->
+        </ul>
+        <button onclick="showAddProject()">Add Project</button>
+        <button onclick="showDailyInput()">Input Fatigue Level</button>
+    </div>
+
+    <div id="addProject" style="display:none;">
+        <h1>Add/Edit Project</h1>
+        <form onsubmit="saveProject(event)">
+            <input type="text" id="projectName" placeholder="Project Name" required>
+            <input type="number" id="projectDifficulty" placeholder="Difficulty (1-5)" required>
+            <input type="number" id="projectTime" placeholder="Time Required (hours)" required>
+            <input type="number" id="projectImportance" placeholder="Importance (1-5)" required>
+            <button type="submit">Save</button>
+        </form>
+        <button onclick="showHome()">Cancel</button>
+    </div>
+
+    <div id="dailyInput" style="display:none;">
+        <h1>Daily Input</h1>
+        <input type="number" id="fatigueLevel" placeholder="Fatigue Level (1-5)" required>
+        <button onclick="suggestProject()">Submit</button>
+        <button onclick="showHome()">Cancel</button>
+    </div>
+
+    <div id="suggestedProject" style="display:none;">
+        <h1>Suggested Project</h1>
+        <p id="suggestedProjectDetails"></p>
+        <button onclick="showHome()">Back</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
