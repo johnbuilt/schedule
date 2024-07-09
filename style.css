@@ -32,3 +32,29 @@ form input {
 form button {
     margin-top: 20px;
 }
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.day {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.day h3 {
+    margin: 0;
+    text-align: center;
+}
+
+.day ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.day ul li {
+    margin: 5px 0;
+}
