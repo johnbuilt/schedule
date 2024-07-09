@@ -63,7 +63,15 @@ function createEditButton(index) {
     const btn = document.createElement('button');
     btn.textContent = 'Edit';
     btn.onclick = () => {
-        // Quick edit functionality here
+        // Edit functionality
+        const project = projects[index];
+        const newTime = prompt(`Edit time for ${project.name}`, project.time);
+        if (newTime !== null) {
+            project.time = parseFloat(newTime);
+            localStorage.setItem('projects', JSON.stringify(projects));
+            displayProjects();
+            autoSuggestWeeklyProjects(); // Recalculate weekly suggestions after editing
+        }
     };
     return btn;
 }
@@ -119,9 +127,16 @@ function optimizeToday(event) {
 
     const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
     weeklySchedule[today] = optimizedProjects;
-    saveScheduleHistory(today, optimizedProjects);
-    displayWeeklySchedule();
-    showWeeklyPlanner();
+    displayTodayProjects(optimizedProjects);
+}
+
+function displayTodayProjects(projects) {
+    suggestedProjectDetails.innerHTML = '';
+    projects.forEach(project => {
+        const p = document.createElement('p');
+        p.textContent = `${project.name} (Importance: ${project.importance}, Difficulty: ${project.difficulty}, Time: ${project.time} hrs)`;
+        suggestedProjectDetails.appendChild(p);
+    });
 }
 
 function displayWeeklySchedule() {
