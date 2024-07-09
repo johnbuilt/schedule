@@ -19,6 +19,7 @@
         </ul>
         <button onclick="showAddProject()">Add Project</button>
         <button onclick="showDailyInput()">Input Fatigue Level</button>
+        <button onclick="showWeeklyView()">Weekly View</button>
     </div>
 
     <div id="addProject" style="display:none;">
@@ -38,6 +39,14 @@
         <input type="number" id="fatigueLevel" placeholder="Fatigue Level (1-5)" required>
         <button onclick="suggestProject()">Submit</button>
         <button onclick="showHome()">Cancel</button>
+    </div>
+
+    <div id="weeklyView" style="display:none;">
+        <h1>Weekly View</h1>
+        <div id="weeklySchedule">
+            <!-- Weekly schedule will be displayed here -->
+        </div>
+        <button onclick="showHome()">Back</button>
     </div>
 
     <div id="suggestedProject" style="display:none;">
