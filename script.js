@@ -1,6 +1,7 @@
 const projectList = document.getElementById('projectList');
 const projectForm = document.querySelector('form');
-const fatigueInput = document.getElementById('fatigueLevel');
+const fatigueInput = document.getElementById('todayFatigueLevel');
+const hoursInput = document.getElementById('hoursAvailable');
 const suggestedProjectDetails = document.getElementById('suggestedProjectDetails');
 const calendar = document.getElementById('calendar');
 
@@ -19,7 +20,7 @@ const weeklySchedule = {
 function showHome() {
     document.getElementById('home').style.display = 'block';
     document.getElementById('addProject').style.display = 'none';
-    document.getElementById('dailyInput').style.display = 'none';
+    document.getElementById('todayInput').style.display = 'none';
     document.getElementById('weeklyPlanner').style.display = 'none';
     document.getElementById('suggestedProject').style.display = 'none';
     displayProjects();
@@ -30,9 +31,9 @@ function showAddProject() {
     document.getElementById('addProject').style.display = 'block';
 }
 
-function showDailyInput() {
+function showTodayInput() {
     document.getElementById('home').style.display = 'none';
-    document.getElementById('dailyInput').style.display = 'block';
+    document.getElementById('todayInput').style.display = 'block';
 }
 
 function showWeeklyPlanner() {
@@ -81,8 +82,13 @@ function saveProject(event) {
     }
 }
 
-function suggestProject() {
+function optimizeToday(event) {
+    event.preventDefault();
     const fatigueLevel = parseFloat(fatigueInput.value);
+    const hoursAvailable = parseFloat(hoursInput.value);
+
+    let availableTime = hoursAvailable;
+    let optimizedProjects = [];
 
     projects.sort((a, b) => {
         let scoreA = a.importance * 2 - a.difficulty + (5 - fatigueLevel) * a.time;
@@ -90,12 +96,17 @@ function suggestProject() {
         return scoreB - scoreA;
     });
 
-    const bestProject = projects[0];
-    suggestedProjectDetails.textContent = bestProject 
-        ? `${bestProject.name} (Importance: ${bestProject.importance}, Difficulty: ${bestProject.difficulty}, Time: ${bestProject.time} hrs)`
-        : 'No projects available';
-    document.getElementById('home').style.display = 'none';
-    document.getElementById('suggestedProject').style.display = 'block';
+    projects.forEach(project => {
+        if (availableTime >= project.time) {
+            optimizedProjects.push(project);
+            availableTime -= project.time;
+        }
+    });
+
+    const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+    weeklySchedule[today] = optimizedProjects;
+    displayWeeklySchedule();
+    showWeeklyPlanner();
 }
 
 function displayWeeklySchedule() {
@@ -134,5 +145,6 @@ function assignProjectToDay(project, day) {
 }
 
 document.getElementById('addProject').querySelector('form').onsubmit = saveProject;
+document.getElementById('todayInput').querySelector('form').onsubmit = optimizeToday;
 
 showHome();
