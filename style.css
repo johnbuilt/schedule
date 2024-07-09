@@ -91,7 +91,7 @@ form button {
 }
 
 .day {
-    width: 30%;
+    width: 14%; /* Adjust to fit 7 days horizontally */
     margin-bottom: 20px;
     box-sizing: border-box;
 }
@@ -107,3 +107,4 @@ form button {
         margin-bottom: 10px;
     }
 }
+
