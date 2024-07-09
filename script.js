@@ -168,7 +168,7 @@ function showConfirmation(message) {
 function autoSuggestWeeklyProjects() {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const todayIndex = new Date().getDay() - 1; // Sunday is 0, Monday is 1, etc.
-    days.slice(todayIndex + 1).forEach(day => {
+    days.slice(todayIndex + 1).forEach((day, index) => {
         let availableTime = 2; // Limit to 2 hours per day
         weeklySchedule[day] = [];
         projects.sort((a, b) => {
@@ -178,7 +178,7 @@ function autoSuggestWeeklyProjects() {
         });
 
         projects.forEach(project => {
-            if (availableTime >= project.time && project.name !== lastSuggestedProject[day]) {
+            if (availableTime >= project.time && project.name !== lastSuggestedProject[days[index]]) {
                 weeklySchedule[day].push(project);
                 availableTime -= project.time;
                 lastSuggestedProject[day] = project.name;
