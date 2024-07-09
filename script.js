@@ -60,11 +60,13 @@ function saveProject(event) {
 
 function suggestProject() {
     const fatigueLevel = parseFloat(fatigueInput.value);
+
     projects.sort((a, b) => {
-        let scoreA = a.importance * 2 - a.difficulty + (fatigueLevel / 5) * a.time;
-        let scoreB = b.importance * 2 - b.difficulty + (fatigueLevel / 5) * b.time;
+        let scoreA = a.importance * 2 - a.difficulty + (5 - fatigueLevel) * a.time;
+        let scoreB = b.importance * 2 - b.difficulty + (5 - fatigueLevel) * b.time;
         return scoreB - scoreA;
     });
+
     const bestProject = projects[0];
     suggestedProjectDetails.textContent = bestProject 
         ? `${bestProject.name} (Importance: ${bestProject.importance}, Difficulty: ${bestProject.difficulty}, Time: ${bestProject.time} hrs)`
