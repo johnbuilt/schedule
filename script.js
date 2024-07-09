@@ -76,3 +76,65 @@ function suggestProject() {
 }
 
 showHome();
+
+const weeklySchedule = {
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
+    Saturday: [],
+    Sunday: []
+};
+
+function showWeeklyView() {
+    document.getElementById('home').style.display = 'none';
+    document.getElementById('weeklyView').style.display = 'block';
+    displayWeeklySchedule();
+}
+
+function displayWeeklySchedule() {
+    const weeklyScheduleDiv = document.getElementById('weeklySchedule');
+    weeklyScheduleDiv.innerHTML = '';
+
+    for (const day in weeklySchedule) {
+        const dayDiv = document.createElement('div');
+        dayDiv.innerHTML = `<h3>${day}</h3>`;
+        const dayList = document.createElement('ul');
+
+        weeklySchedule[day].forEach(project => {
+            const li = document.createElement('li');
+            li.textContent = `${project.name} (Importance: ${project.importance}, Difficulty: ${project.difficulty}, Time: ${project.time} hrs)`;
+            dayList.appendChild(li);
+        });
+
+        dayDiv.appendChild(dayList);
+        weeklyScheduleDiv.appendChild(dayDiv);
+    }
+}
+
+function assignProjectToDay(project, day) {
+    weeklySchedule[day].push(project);
+    displayWeeklySchedule();
+}
+
+document.getElementById('addProject').querySelector('form').onsubmit = function(event) {
+    event.preventDefault();
+    const newProject = {
+        name: document.getElementById('projectName').value,
+        difficulty: document.getElementById('projectDifficulty').value,
+        time: document.getElementById('projectTime').value,
+        importance: document.getElementById('projectImportance').value,
+    };
+    projects.push(newProject);
+    localStorage.setItem('projects', JSON.stringify(projects));
+    projectForm.reset();
+    showHome();
+    // Ask user to assign the project to a day
+    const day = prompt('Assign this project to a day of the week (e.g., Monday):');
+    if (day && weeklySchedule[day]) {
+        assignProjectToDay(newProject, day);
+    }
+};
+
+showHome();
