@@ -21,16 +21,6 @@ const weeklySchedule = {
     Sunday: []
 };
 
-const lastSuggestedProject = {
-    Monday: null,
-    Tuesday: null,
-    Wednesday: null,
-    Thursday: null,
-    Friday: null,
-    Saturday: null,
-    Sunday: null
-};
-
 function showHome() {
     document.getElementById('home').style.display = 'block';
     document.getElementById('addProject').style.display = 'none';
@@ -83,8 +73,8 @@ function saveProject(event) {
     const newProject = {
         name: document.getElementById('projectName').value,
         difficulty: document.getElementById('projectDifficulty').value,
-        time: document.getElementById('projectTime').value,
-        importance: document.getElementById('projectImportance').value,
+        time: parseFloat(document.getElementById('projectTime').value),
+        importance: parseFloat(document.getElementById('projectImportance').value),
     };
     projects.push(newProject);
     localStorage.setItem('projects', JSON.stringify(projects));
@@ -168,7 +158,9 @@ function showConfirmation(message) {
 function autoSuggestWeeklyProjects() {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const todayIndex = new Date().getDay() - 1; // Sunday is 0, Monday is 1, etc.
-    days.slice(todayIndex + 1).forEach((day, index) => {
+    const usedProjects = new Set();
+
+    days.slice(todayIndex + 1).forEach((day) => {
         let availableTime = 2; // Limit to 2 hours per day
         weeklySchedule[day] = [];
         projects.sort((a, b) => {
@@ -178,13 +170,19 @@ function autoSuggestWeeklyProjects() {
         });
 
         projects.forEach(project => {
-            if (availableTime >= project.time && project.name !== lastSuggestedProject[days[index]]) {
-                weeklySchedule[day].push(project);
-                availableTime -= project.time;
-                lastSuggestedProject[day] = project.name;
+            if (availableTime > 0 && project.time > 0 && !usedProjects.has(project.name)) {
+                const timeToUse = Math.min(availableTime, project.time);
+                weeklySchedule[day].push({ ...project, time: timeToUse });
+                project.time -= timeToUse;
+                availableTime -= timeToUse;
+
+                if (project.time === 0) {
+                    usedProjects.add(project.name);
+                }
             }
         });
     });
+
     displayWeeklySchedule();
 }
 
