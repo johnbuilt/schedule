@@ -21,29 +21,31 @@ const weeklySchedule = {
     Sunday: []
 };
 
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
+    document.getElementById(pageId).style.display = 'block';
+}
+
 function showHome() {
-    document.getElementById('home').style.display = 'block';
-    document.getElementById('addProject').style.display = 'none';
-    document.getElementById('todayInput').style.display = 'none';
-    document.getElementById('weeklyPlanner').style.display = 'none';
-    document.getElementById('suggestedProject').style.display = 'none';
+    showPage('home');
     displayProjects();
 }
 
 function showAddProject() {
-    document.getElementById('home').style.display = 'none';
-    document.getElementById('addProject').style.display = 'block';
+    showPage('addProject');
 }
 
 function showTodayInput() {
-    document.getElementById('home').style.display = 'none';
-    document.getElementById('todayInput').style.display = 'block';
+    showPage('todayInput');
 }
 
 function showWeeklyPlanner() {
-    document.getElementById('home').style.display = 'none';
-    document.getElementById('weeklyPlanner').style.display = 'block';
+    showPage('weeklyPlanner');
     displayWeeklySchedule();
+}
+
+function showCalendarPage() {
+    showPage('calendarPage');
 }
 
 function displayProjects() {
@@ -51,9 +53,19 @@ function displayProjects() {
     projects.forEach((project, index) => {
         const li = document.createElement('li');
         li.textContent = `${project.name} (Importance: ${project.importance}, Difficulty: ${project.difficulty}, Time: ${project.time} hrs)`;
+        li.appendChild(createEditButton(index));
         li.appendChild(createDeleteButton(index));
         projectList.appendChild(li);
     });
+}
+
+function createEditButton(index) {
+    const btn = document.createElement('button');
+    btn.textContent = 'Edit';
+    btn.onclick = () => {
+        // Quick edit functionality here
+    };
+    return btn;
 }
 
 function createDeleteButton(index) {
@@ -140,11 +152,6 @@ function createRemoveFromDayButton(day, index) {
         displayWeeklySchedule();
     };
     return btn;
-}
-
-function assignProjectToDay(project, day) {
-    weeklySchedule[day].push(project);
-    displayWeeklySchedule();
 }
 
 function showConfirmation(message) {
