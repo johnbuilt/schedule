@@ -56,6 +56,21 @@ body {
     font-size: 12px;
 }
 
+/* Project List */
+#projectList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#projectList li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
 /* Center the weekly planner and add padding around it */
 #weeklyPlanner {
     width: 80%;
