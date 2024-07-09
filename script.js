@@ -62,6 +62,7 @@ function createDeleteButton(index) {
         projects.splice(index, 1);
         localStorage.setItem('projects', JSON.stringify(projects));
         displayProjects();
+        autoSuggestWeeklyProjects(); // Recalculate weekly suggestions after deletion
     };
     return btn;
 }
@@ -79,17 +80,13 @@ function saveProject(event) {
     projectForm.reset();
     showHome();
     showConfirmation('Project added successfully!');
-    // Ask user to assign the project to a day
-    const day = prompt('Assign this project to a day of the week (e.g., Monday):');
-    if (day && weeklySchedule[day]) {
-        assignProjectToDay(newProject, day);
-    }
+    autoSuggestWeeklyProjects(); // Recalculate weekly suggestions after adding a new project
 }
 
 function optimizeToday(event) {
     event.preventDefault();
     const fatigueLevel = parseFloat(fatigueInput.value);
-    const hoursAvailable = parseFloat(hoursInput.value);
+    const hoursAvailable = Math.min(2, parseFloat(hoursInput.value)); // Limit to 2 hours max
 
     let availableTime = hoursAvailable;
     let optimizedProjects = [];
@@ -156,7 +153,29 @@ function showConfirmation(message) {
     }, 3000);
 }
 
+function autoSuggestWeeklyProjects() {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    days.forEach(day => {
+        let availableTime = 2; // Limit to 2 hours per day
+        weeklySchedule[day] = [];
+        projects.sort((a, b) => {
+            let scoreA = a.importance * 2 - a.difficulty + a.time;
+            let scoreB = b.importance * 2 - b.difficulty + b.time;
+            return scoreB - scoreA;
+        });
+
+        projects.forEach(project => {
+            if (availableTime >= project.time) {
+                weeklySchedule[day].push(project);
+                availableTime -= project.time;
+            }
+        });
+    });
+    displayWeeklySchedule();
+}
+
 document.getElementById('addProject').querySelector('form').onsubmit = saveProject;
 document.getElementById('todayInput').querySelector('form').onsubmit = optimizeToday;
 
 showHome();
+autoSuggestWeeklyProjects(); // Initial calculation for weekly suggestions
