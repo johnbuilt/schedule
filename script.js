@@ -9,6 +9,7 @@ confirmationMessage.id = 'confirmationMessage';
 document.body.appendChild(confirmationMessage);
 
 let projects = JSON.parse(localStorage.getItem('projects')) || [];
+let scheduleHistory = JSON.parse(localStorage.getItem('scheduleHistory')) || [];
 
 const weeklySchedule = {
     Monday: [],
@@ -18,6 +19,16 @@ const weeklySchedule = {
     Friday: [],
     Saturday: [],
     Sunday: []
+};
+
+const lastSuggestedProject = {
+    Monday: null,
+    Tuesday: null,
+    Wednesday: null,
+    Thursday: null,
+    Friday: null,
+    Saturday: null,
+    Sunday: null
 };
 
 function showHome() {
@@ -106,6 +117,7 @@ function optimizeToday(event) {
 
     const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
     weeklySchedule[today] = optimizedProjects;
+    saveScheduleHistory(today, optimizedProjects);
     displayWeeklySchedule();
     showWeeklyPlanner();
 }
@@ -155,7 +167,8 @@ function showConfirmation(message) {
 
 function autoSuggestWeeklyProjects() {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    days.forEach(day => {
+    const todayIndex = new Date().getDay() - 1; // Sunday is 0, Monday is 1, etc.
+    days.slice(todayIndex + 1).forEach(day => {
         let availableTime = 2; // Limit to 2 hours per day
         weeklySchedule[day] = [];
         projects.sort((a, b) => {
@@ -165,13 +178,20 @@ function autoSuggestWeeklyProjects() {
         });
 
         projects.forEach(project => {
-            if (availableTime >= project.time) {
+            if (availableTime >= project.time && project.name !== lastSuggestedProject[day]) {
                 weeklySchedule[day].push(project);
                 availableTime -= project.time;
+                lastSuggestedProject[day] = project.name;
             }
         });
     });
     displayWeeklySchedule();
+}
+
+function saveScheduleHistory(day, projects) {
+    const date = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    scheduleHistory.push({ date, day, projects });
+    localStorage.setItem('scheduleHistory', JSON.stringify(scheduleHistory));
 }
 
 document.getElementById('addProject').querySelector('form').onsubmit = saveProject;
