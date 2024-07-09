@@ -5,51 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Scheduler</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <!-- Pages -->
-    <div id="home" class="page" style="display:none;">
+    <div id="home" class="page">
         <h1>My Projects</h1>
         <ul id="projectList"></ul>
         <button onclick="showAddProject()">Add Project</button>
     </div>
 
-    <div id="addProject" class="page" style="display:none;">
+    <div id="addProject" class="page">
         <h1>Add Project</h1>
         <form>
-            <input type="text" id="projectName" placeholder="Project Name" required>
-            <input type="number" id="projectDifficulty" placeholder="Difficulty (1-5)" required>
-            <input type="number" id="projectTime" placeholder="Time (hrs)" required>
-            <input type="number" id="projectImportance" placeholder="Importance (1-5)" required>
-            <button type="submit">Save Project</button>
+            <label for="projectName">Name:</label>
+            <input type="text" id="projectName" required>
+            <label for="projectImportance">Importance:</label>
+            <input type="number" id="projectImportance" required min="1" max="5">
+            <label for="projectDifficulty">Difficulty:</label>
+            <input type="number" id="projectDifficulty" required min="1" max="5">
+            <label for="projectTime">Time (hrs):</label>
+            <input type="number" id="projectTime" required min="0.5" step="0.5">
+            <button type="submit">Save</button>
         </form>
+        <button onclick="showHome()">Cancel</button>
     </div>
 
-    <div id="todayInput" class="page" style="display:none;">
-        <h1>Today</h1>
+    <div id="todayInput" class="page">
+        <h1>Today's Plan</h1>
         <form>
-            <input type="number" id="todayFatigueLevel" placeholder="Fatigue Level (1-5)" required>
-            <input type="number" id="hoursAvailable" placeholder="Hours Available" required>
+            <label for="todayFatigueLevel">Fatigue Level:</label>
+            <input type="number" id="todayFatigueLevel" required min="1" max="5">
+            <label for="hoursAvailable">Hours Available:</label>
+            <input type="number" id="hoursAvailable" required min="0.5" step="0.5">
             <button type="submit">Optimize</button>
+            <button type="button" onclick="showHome()">Cancel</button>
         </form>
         <div id="suggestedProjectDetails"></div>
     </div>
 
-    <div id="weeklyPlanner" class="page" style="display:none;">
-        <h1>This Week</h1>
+    <div id="weeklyPlanner" class="page">
+        <h1>Weekly Planner</h1>
         <div id="calendar"></div>
         <button onclick="showHome()">Back</button>
     </div>
 
-    <div id="calendarPage" class="page" style="display:none;">
+    <div id="calendarPage" class="page">
         <h1>Calendar</h1>
-        <!-- Display previous and upcoming projects -->
+        <!-- Calendar content goes here -->
+        <button onclick="showHome()">Back</button>
     </div>
 
-    <!-- Navbar -->
     <div class="navbar">
-        <a href="#" onclick="showHome()"><i class="fas fa-tasks"></i><span>Projects</span></a>
+        <a href="#" onclick="showHome()"><i class="fas fa-list"></i><span>Projects</span></a>
         <a href="#" onclick="showTodayInput()"><i class="fas fa-calendar-day"></i><span>Today</span></a>
         <a href="#" onclick="showWeeklyPlanner()"><i class="fas fa-calendar-week"></i><span>This Week</span></a>
         <a href="#" onclick="showCalendarPage()"><i class="fas fa-calendar-alt"></i><span>Calendar</span></a>
