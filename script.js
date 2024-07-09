@@ -1,9 +1,12 @@
 const projectList = document.getElementById('projectList');
-const projectForm = document.querySelector('form');
+const projectForm = document.querySelector('#addProject form');
 const fatigueInput = document.getElementById('todayFatigueLevel');
 const hoursInput = document.getElementById('hoursAvailable');
 const suggestedProjectDetails = document.getElementById('suggestedProjectDetails');
 const calendar = document.getElementById('calendar');
+const confirmationMessage = document.createElement('div');
+confirmationMessage.id = 'confirmationMessage';
+document.body.appendChild(confirmationMessage);
 
 let projects = JSON.parse(localStorage.getItem('projects')) || [];
 
@@ -75,6 +78,7 @@ function saveProject(event) {
     localStorage.setItem('projects', JSON.stringify(projects));
     projectForm.reset();
     showHome();
+    showConfirmation('Project added successfully!');
     // Ask user to assign the project to a day
     const day = prompt('Assign this project to a day of the week (e.g., Monday):');
     if (day && weeklySchedule[day]) {
@@ -142,6 +146,14 @@ function createRemoveFromDayButton(day, index) {
 function assignProjectToDay(project, day) {
     weeklySchedule[day].push(project);
     displayWeeklySchedule();
+}
+
+function showConfirmation(message) {
+    confirmationMessage.textContent = message;
+    confirmationMessage.style.display = 'block';
+    setTimeout(() => {
+        confirmationMessage.style.display = 'none';
+    }, 3000);
 }
 
 document.getElementById('addProject').querySelector('form').onsubmit = saveProject;
