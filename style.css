@@ -72,3 +72,26 @@ form button {
     display: none;
     z-index: 1000;
 }
+
+#weeklyPlanner {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.day {
+    margin: 10px 0;
+}
+
+#calendar {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.day {
+    width: 30%;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
