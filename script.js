@@ -72,7 +72,7 @@ function saveProject(event) {
     event.preventDefault();
     const newProject = {
         name: document.getElementById('projectName').value,
-        difficulty: document.getElementById('projectDifficulty').value,
+        difficulty: parseFloat(document.getElementById('projectDifficulty').value),
         time: parseFloat(document.getElementById('projectTime').value),
         importance: parseFloat(document.getElementById('projectImportance').value),
     };
@@ -159,17 +159,18 @@ function autoSuggestWeeklyProjects() {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const todayIndex = new Date().getDay() - 1; // Sunday is 0, Monday is 1, etc.
     const usedProjects = new Set();
+    let tempProjects = JSON.parse(JSON.stringify(projects)); // Create a deep copy of the projects array
 
     days.slice(todayIndex + 1).forEach((day) => {
         let availableTime = 2; // Limit to 2 hours per day
         weeklySchedule[day] = [];
-        projects.sort((a, b) => {
+        tempProjects.sort((a, b) => {
             let scoreA = a.importance * 2 - a.difficulty + a.time;
             let scoreB = b.importance * 2 - b.difficulty + b.time;
             return scoreB - scoreA;
         });
 
-        projects.forEach(project => {
+        tempProjects.forEach(project => {
             if (availableTime > 0 && project.time > 0 && !usedProjects.has(project.name)) {
                 const timeToUse = Math.min(availableTime, project.time);
                 weeklySchedule[day].push({ ...project, time: timeToUse });
