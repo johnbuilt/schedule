@@ -3,7 +3,7 @@ name: Deploy static content to Pages
 on:
   push:
     branches:
-      - main  # or the branch you want to trigger the workflow on
+      - main  # Ensure this is the branch you want to deploy from
 
 jobs:
   deploy:
@@ -16,4 +16,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: .  # This should be the root directory where your static files are located
+          publish_dir: .  # Ensure this points to the correct directory with your static files
