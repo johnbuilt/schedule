@@ -2,13 +2,25 @@ const projectList = document.getElementById('projectList');
 const projectForm = document.querySelector('form');
 const fatigueInput = document.getElementById('fatigueLevel');
 const suggestedProjectDetails = document.getElementById('suggestedProjectDetails');
+const calendar = document.getElementById('calendar');
 
 let projects = JSON.parse(localStorage.getItem('projects')) || [];
+
+const weeklySchedule = {
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
+    Saturday: [],
+    Sunday: []
+};
 
 function showHome() {
     document.getElementById('home').style.display = 'block';
     document.getElementById('addProject').style.display = 'none';
     document.getElementById('dailyInput').style.display = 'none';
+    document.getElementById('weeklyPlanner').style.display = 'none';
     document.getElementById('suggestedProject').style.display = 'none';
     displayProjects();
 }
@@ -21,6 +33,12 @@ function showAddProject() {
 function showDailyInput() {
     document.getElementById('home').style.display = 'none';
     document.getElementById('dailyInput').style.display = 'block';
+}
+
+function showWeeklyPlanner() {
+    document.getElementById('home').style.display = 'none';
+    document.getElementById('weeklyPlanner').style.display = 'block';
+    displayWeeklySchedule();
 }
 
 function displayProjects() {
@@ -56,6 +74,11 @@ function saveProject(event) {
     localStorage.setItem('projects', JSON.stringify(projects));
     projectForm.reset();
     showHome();
+    // Ask user to assign the project to a day
+    const day = prompt('Assign this project to a day of the week (e.g., Monday):');
+    if (day && weeklySchedule[day]) {
+        assignProjectToDay(newProject, day);
+    }
 }
 
 function suggestProject() {
@@ -75,42 +98,34 @@ function suggestProject() {
     document.getElementById('suggestedProject').style.display = 'block';
 }
 
-showHome();
-
-const weeklySchedule = {
-    Monday: [],
-    Tuesday: [],
-    Wednesday: [],
-    Thursday: [],
-    Friday: [],
-    Saturday: [],
-    Sunday: []
-};
-
-function showWeeklyView() {
-    document.getElementById('home').style.display = 'none';
-    document.getElementById('weeklyView').style.display = 'block';
-    displayWeeklySchedule();
-}
-
 function displayWeeklySchedule() {
-    const weeklyScheduleDiv = document.getElementById('weeklySchedule');
-    weeklyScheduleDiv.innerHTML = '';
-
+    calendar.innerHTML = '';
     for (const day in weeklySchedule) {
         const dayDiv = document.createElement('div');
+        dayDiv.className = 'day';
         dayDiv.innerHTML = `<h3>${day}</h3>`;
         const dayList = document.createElement('ul');
 
-        weeklySchedule[day].forEach(project => {
+        weeklySchedule[day].forEach((project, index) => {
             const li = document.createElement('li');
             li.textContent = `${project.name} (Importance: ${project.importance}, Difficulty: ${project.difficulty}, Time: ${project.time} hrs)`;
+            li.appendChild(createRemoveFromDayButton(day, index));
             dayList.appendChild(li);
         });
 
         dayDiv.appendChild(dayList);
-        weeklyScheduleDiv.appendChild(dayDiv);
+        calendar.appendChild(dayDiv);
     }
+}
+
+function createRemoveFromDayButton(day, index) {
+    const btn = document.createElement('button');
+    btn.textContent = 'Remove';
+    btn.onclick = () => {
+        weeklySchedule[day].splice(index, 1);
+        displayWeeklySchedule();
+    };
+    return btn;
 }
 
 function assignProjectToDay(project, day) {
@@ -118,23 +133,6 @@ function assignProjectToDay(project, day) {
     displayWeeklySchedule();
 }
 
-document.getElementById('addProject').querySelector('form').onsubmit = function(event) {
-    event.preventDefault();
-    const newProject = {
-        name: document.getElementById('projectName').value,
-        difficulty: document.getElementById('projectDifficulty').value,
-        time: document.getElementById('projectTime').value,
-        importance: document.getElementById('projectImportance').value,
-    };
-    projects.push(newProject);
-    localStorage.setItem('projects', JSON.stringify(projects));
-    projectForm.reset();
-    showHome();
-    // Ask user to assign the project to a day
-    const day = prompt('Assign this project to a day of the week (e.g., Monday):');
-    if (day && weeklySchedule[day]) {
-        assignProjectToDay(newProject, day);
-    }
-};
+document.getElementById('addProject').querySelector('form').onsubmit = saveProject;
 
 showHome();
