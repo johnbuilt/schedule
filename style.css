@@ -93,7 +93,7 @@ h1, h2 {
     justify-content: space-around;
 }
 
-#calendar div {
+#calendar .day {
     background-color: #90E0EF;
     border: 1px solid #0077B6;
     border-radius: 8px;
@@ -103,17 +103,17 @@ h1, h2 {
     box-sizing: border-box;
 }
 
-#calendar div h2 {
+#calendar .day h2 {
     text-align: center;
     font-size: 18px;
 }
 
-#calendar div ul {
+#calendar .day ul {
     list-style: none;
     padding: 0;
 }
 
-#calendar div ul li {
+#calendar .day ul li {
     background-color: #CAF0F8;
     border: 1px solid #0077B6;
     border-radius: 8px;
@@ -174,7 +174,7 @@ form input {
         display: none;
     }
 
-    #calendar div {
+    #calendar .day {
         width: calc(100% - 20px);
     }
 }
