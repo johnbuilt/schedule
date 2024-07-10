@@ -225,7 +225,7 @@ function loadWeeklyPlanner() {
     const today = new Date();
     const weeklyPlanner = document.getElementById('calendar');
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const dayElements = weeklyPlanner.getElementsByTagName('div');
+    const dayElements = weeklyPlanner.getElementsByClassName('day');
 
     for (let i = 0; i < dayElements.length; i++) {
         const dayName = daysOfWeek[i];
@@ -256,4 +256,5 @@ function loadWeeklyPlanner() {
 
 // Call loadWeeklyPlanner when the page loads
 document.addEventListener('DOMContentLoaded', loadWeeklyPlanner);
+
 
