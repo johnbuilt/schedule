@@ -220,3 +220,40 @@ document.getElementById('todayInput').querySelector('form').onsubmit = optimizeT
 
 showHome();
 autoSuggestWeeklyProjects(); // Initial calculation for weekly suggestions
+
+function loadWeeklyPlanner() {
+    const today = new Date();
+    const weeklyPlanner = document.getElementById('calendar');
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayElements = weeklyPlanner.getElementsByTagName('div');
+
+    for (let i = 0; i < dayElements.length; i++) {
+        const dayName = daysOfWeek[i];
+        const date = new Date(today);
+        date.setDate(today.getDate() - today.getDay() + i);
+
+        const dateString = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+        dayElements[i].innerHTML = `<h2>${dayName} (${dateString})</h2><ul></ul>`;
+    }
+
+    // Load projects into the corresponding days
+    const projects = getProjects();
+    projects.forEach(project => {
+        const li = document.createElement('li');
+        li.textContent = `${project.id} (Importance: ${project.importance}, Difficulty: ${project.difficulty}, Time: ${project.time} hrs)`;
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.onclick = () => {
+            removeProject(project.id);
+            loadWeeklyPlanner();
+        };
+        li.appendChild(removeButton);
+
+        const projectDayIndex = (today.getDay() + project.id) % 7; // Just a mock for assigning projects to days
+        dayElements[projectDayIndex].querySelector('ul').appendChild(li);
+    });
+}
+
+// Call loadWeeklyPlanner when the page loads
+document.addEventListener('DOMContentLoaded', loadWeeklyPlanner);
+
