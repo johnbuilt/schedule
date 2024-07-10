@@ -3,11 +3,11 @@ body {
     font-family: 'Nunito Sans', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #CAFOF8;
+    background-color: #CAF0F8;
     color: #03045E;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
     margin-top: 20px;
     color: #03045E;
@@ -44,6 +44,17 @@ h1 {
     color: #00B4D8;
 }
 
+.navbar a span {
+    display: block;
+}
+
+/* Project list styles */
+#projectList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #projectList li {
     margin: 10px 0;
     list-style: none;
@@ -54,6 +65,7 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 80%;
 }
 
 #projectList li button {
@@ -68,6 +80,10 @@ h1 {
 
 #projectList li button:hover {
     background-color: #005f8a;
+}
+
+#projectList li button i {
+    margin: 0;
 }
 
 /* Weekly Planner styles */
@@ -98,7 +114,7 @@ h1 {
 }
 
 #calendar div ul li {
-    background-color: #f8f8f8;
+    background-color: #CAF0F8;
     border: 1px solid #0077B6;
     border-radius: 8px;
     margin: 5px 0;
@@ -109,22 +125,24 @@ h1 {
 }
 
 /* Button styles */
-button {
+button, input[type="submit"] {
     background-color: #0077B6;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    margin: 5px 0;
 }
 
-button:hover {
+button:hover, input[type="submit"]:hover {
     background-color: #005f8a;
 }
 
 form {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 form label {
@@ -138,13 +156,25 @@ form input {
     border: 1px solid #0077B6;
 }
 
+/* Centering content */
+#addProjectButton {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 /* Responsive styling */
 @media (max-width: 600px) {
-    #calendar div {
-        width: calc(100% - 20px);
+    .navbar {
+        flex-direction: row;
+        justify-content: space-around;
     }
 
-    .navbar {
-        flex-direction: column;
+    .navbar a span {
+        display: none;
+    }
+
+    #calendar div {
+        width: calc(100% - 20px);
     }
 }
